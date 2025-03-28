@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>//////X/</title>
+    <style>
+        body {
+            background: #0a0a12;
+            color: #0af;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+            margin: 0;
+        }
+        div#canvas-frame{
+            border:none;
+            cursor:pointer;
+            width:100%;
+            height:100%;
+            background-color:#233333;
+            display:none;
+        }
+        .cyber-terminal {
+            position: relative;
+						width:100%;
+            max-width: 3000px;
+            margin: 0 auto;
+            border: 2px solid #ff00aa;
+            box-shadow: 0 0 20px #ff00aa80;
+            min-height: 100vh;
+        }
+        
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(0, 255, 255, 0.06) 50%,
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 #0af, -2px 0 #f0a; }
+            100% { text-shadow: -2px 0 #0af, 2px 0 #f0a; }
+        }
+        
+        .glitch-text {
+            animation: glitch 0.5s linear infinite alternate;
+        }
+        .paymentImg{
+            width: 30%
+        }
+    </style>
+</head>
+<body onload='threeStart()'>
+    <div id='main-terminal' class="cyber-terminal">
+        <div class="scanlines"></div>
+        <canvas id="matrix"  title="Where are we?" href="needjs.html" onclick="startCountdown();return false;"></canvas>
+        
+        <header style="padding: 2rem; position: relative">
+            <h1 class="glitch-text">> Zephyr Fang</h1>
+            <p style="color: #ff00aa">> Acadamic researcher / Senior Engineer / Ethical Hacker</p>
+        </header>
+        
+        <main style="padding: 0 2rem 2rem">
+            <section>
+              <h2>> Expert at IoT security, know much about Unix programing, Formal verification, and more</h2></br>
+              <h3>Ask me <a href='mailto:yiwfang@iu.edu'>questions</a> and pay me a coffee (>$5):</h3>
+              <h3>0x2a30e5ac6da67c92f720b38adca57971955a3147 (ERC20)</h3>
+              <img src='../img/payment.png' class = 'paymentImg'></img> 
+              <img src='../img/cryptoPayment.png' class = 'paymentImg'></img> 
+              
+                <div id="skills-visualization"></div>
+            </section>
+        </main>
+    </div>
+	  <div id='canvas-frame'></div>
+
+    <script>
+        // Matrix rain effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = canvas.parentElement.offsetWidth;
+        canvas.height = canvas.parentElement.offsetHeight;
+        
+        const chars = "01";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for (let i = 0; i < columns; i++) drops[i] = 1;
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 18, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0af';
+            ctx.font = `${fontSize}px monospace`;
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 33);
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // Add GSAP animations for interactive elements
+        gsap.from("h1", {duration: 1, opacity: 0, y: -50, ease: "power2.out"});
+    </script>
+    <!-- <script> -->
+    <!--   function jump(){ -->
+    <!--       window.location.href = "/game1"; -->
+    <!--   } -->
+    <!-- </script> -->
+<script src='three.min.js'></script>
+<script src='GLTFLoader.js'></script>
+<script src='output.min.js'></script>
+
+<script>
+function startCountdown() {
+  const countdownEl = document.createElement('div');
+  countdownEl.style = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10rem;
+    font-weight: bold;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    z-index: 9999;
+  `;
+  document.body.appendChild(countdownEl);
+
+  let count = 3;
+  countdownEl.textContent = count;
+  
+  const timer = setInterval(() => {
+    count--;
+    countdownEl.textContent = count;
+    
+    // Animation
+    countdownEl.style.transform = 'scale(1.1)';
+    countdownEl.style.transition = 'transform 0.2s ease-out';
+    setTimeout(() => {
+      countdownEl.style.transform = 'scale(1)';
+    }, 200);
+
+    if (count <= 1) {
+      clearInterval(timer);
+      setTimeout(() => {
+          countdownEl.remove();
+          gameFrame = document.getElementById("canvas-frame");
+          gameFrame.style.display = "true";
+          div = document.getElementById("main-terminal");
+          gameFrame.style.display = "block";
+        lockPointer();
+      }, 1000);
+    }
+  }, 1000);
+}
+</script>
+
+</body>
+</html>

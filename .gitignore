@@ -1,0 +1,4 @@
+*.bak
+backup/
+node_modules/
+src/
